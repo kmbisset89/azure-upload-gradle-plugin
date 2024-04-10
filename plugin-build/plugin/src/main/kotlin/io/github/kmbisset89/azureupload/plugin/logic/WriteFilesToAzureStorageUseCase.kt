@@ -21,12 +21,12 @@ class WriteFilesToAzureStorageUseCase {
 
         storageAccount.createIfNotExists()
 
-        config.properties.forEach { (blobName, value) ->
+        config.properties.forEach { (blobName, path) ->
             try {
-                val blob = storageAccount.getBlobClient(blobName.name)
-                blob.uploadFromFile(value.path, true)
+                val blob = storageAccount.getBlobClient(blobName)
+                blob.uploadFromFile(path, true)
             } catch (e : BlobStorageException){
-                project.logger.error("Error uploading file ${value.path} to Azure Blob Storage: ${e.message}")
+                project.logger.error("Error uploading file $path to Azure Blob Storage: ${e.message}")
             }
         }
     }

@@ -1,5 +1,6 @@
 package io.github.kmbisset89.azureupload.plugin.logic
 
+import org.gradle.api.tasks.Input
 import java.io.File
 
 
@@ -16,7 +17,7 @@ open class ConfigPropertiesBuilder(initBlock: ConfigPropertiesBuilder.() -> Unit
      * The list that holds all configuration properties as pairs of strings, where the first string is the key,
      * and the second string is the value. The value can represent a path or file location.
      */
-    val allConfigProperties: MutableList<Pair<BlobName, Path>> = mutableListOf()
+    val allConfigProperties: MutableList<TaskInfo> = mutableListOf()
 
     // Initialize the builder with the provided block of configuration properties.
     init {
@@ -30,7 +31,9 @@ open class ConfigPropertiesBuilder(initBlock: ConfigPropertiesBuilder.() -> Unit
      * @param value The file path to associate with the key.
      */
     infix fun String.withPath(value: String) {
-        allConfigProperties.add(Pair(BlobName(this), Path(value)))
+        allConfigProperties.add(
+            TaskInfo(this, value)
+        )
     }
 
     /**
@@ -40,6 +43,8 @@ open class ConfigPropertiesBuilder(initBlock: ConfigPropertiesBuilder.() -> Unit
      * @param value The [File] whose absolute path is to be associated with the key.
      */
     infix fun String.withFile(value: File) {
-        allConfigProperties.add(Pair(BlobName(this), Path(value.absolutePath)))
+        allConfigProperties.add(
+            TaskInfo(this, value.absolutePath)
+        )
     }
 }

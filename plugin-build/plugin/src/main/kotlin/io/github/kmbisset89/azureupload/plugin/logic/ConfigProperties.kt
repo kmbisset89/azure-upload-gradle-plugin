@@ -13,5 +13,5 @@ import org.gradle.api.tasks.Nested
 data class ConfigProperties(
 
     @Nested
-    val properties: List<Pair<BlobName, Path>>,
+    val properties: List<TaskInfo>,
 )
